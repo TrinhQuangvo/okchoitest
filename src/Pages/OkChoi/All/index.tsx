@@ -1,30 +1,59 @@
-import React, { useEffect } from 'react'
-import axios from 'axios'
+import React, { useEffect, useState } from 'react'
+import { APIs } from '../../../APIs/okchoi.api'
+import Loading from '../../../Components/Loading'
+import Arrcordion from '../../../Components/Accordion'
+import { iTableHeader, iLiveScores } from '../../../models/payload.model'
 
-type Props = {}
+const All: React.FC = () => {
 
-const All: React.FC<Props> = () => {
-
-    const payload = {}
-
+    const [allData, setAllData] = useState<any>([])
+    
     const fetchData = async () => {
         try {
-            const response = await axios.post('https://api.okchoi.com/api/leaguelive/', payload);
-            console.log(response)
+            const res = await APIs.getAllData();
+            const data = res.data.value.datas
+            if (data)
+                setAllData(data)
         } catch (error) {
             console.log(error)
         }
     }
 
-    
-
     useEffect(() => {
         fetchData()
     }, [])
 
-
     return (
-        <div>All</div>
+        <>
+            {!allData ? <div className='py-6 flex justify-center'><Loading /></div> : allData.map((item: any, i: number) => {
+                const header: iTableHeader = {
+                    country: item.country,
+                    countryLogo: item.countryLogo,
+                    liveCount: item.liveCount,
+                    name: item.name
+                }
+                const content = !item.liveScores ? [] : item.liveScores.map((data: iLiveScores) => {
+                    return {
+                        homeLogo: data.homeLogo,
+                        homeName: data.homeName,
+                        homeScore: data.homeScore,
+                        homeHalfScore: data.homeHalfScore,
+                        homeCorner: data.homeCorner,
+                        awayLogo: data.awayLogo,
+                        awayName: data.awayName,
+                        awayScore: data.awayScore,
+                        awayHalfScore: data.awayHalfScore,
+                        awayCorner: data.awayCorner,
+                        matchTime: data.matchTime,
+                        minute: data.minute
+                    }
+                })
+                return <div key={i}>
+                    <Arrcordion header={header} content={content} />
+                </div>
+            })
+            }
+        </>
     )
 }
 

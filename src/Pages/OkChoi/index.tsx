@@ -5,7 +5,7 @@ import Incomming from './Incomming'
 import Live from './Live'
 import Finished from './Finished'
 import Mine from './Mine'
-import Hot from './Hot' 
+import Hot from './Hot'
 
 export const OkChoiTest: React.FC = () => {
     const [currentTab, setCurrentTab] = useState<string>('trực tiếp')
@@ -31,12 +31,14 @@ export const OkChoiTest: React.FC = () => {
     return (
         <DefaultLayout>
             {renderTabs()}
-            <>{currentTab === 'tất cả' && <All />} </>
-            <>{currentTab === 'hot' && <Hot />} </>
-            <>{currentTab === 'sắp diễn ra' && <Incomming />} </>
-            <>{currentTab === 'trực tiếp' && <Live />} </>
-            <>{currentTab === 'đã kết thúc' && <Finished />} </>
-            <>{currentTab === 'của tôi' && <Mine />} </>
+            <div className='mt-4 lg:mt-6'>
+                <>{currentTab === 'tất cả' && <All />} </>
+                <>{currentTab === 'hot' && <Hot />} </>
+                <>{currentTab === 'sắp diễn ra' && <Incomming />} </>
+                <>{currentTab === 'trực tiếp' && <Live />} </>
+                <>{currentTab === 'đã kết thúc' && <Finished />} </>
+                <>{currentTab === 'của tôi' && <Mine />} </>
+            </div>
 
         </DefaultLayout>
     )
